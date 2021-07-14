@@ -28,12 +28,18 @@ body {
         <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
 
         <script>
-            let map;
+            var map, heatmap, type;
 
-            function initMap() {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: { lat: -34.397, lng: 150.644 },
-                    zoom: 8,
+            function initMap(latitude = 13.066239, longitude = 80.274816) {
+                map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: {lat: latitude, lng: longitude},
+                mapTypeId: 'roadmap'
+                });
+
+                heatmap = new google.maps.visualization.HeatmapLayer({
+                    map: map,
+                    radius: 30
                 });
             }
         </script>
