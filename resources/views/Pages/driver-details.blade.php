@@ -50,16 +50,19 @@
             const geocoder_driver = new google.maps.Geocoder();
             const geocoder_pick = new google.maps.Geocoder();
 
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+
             var _source = document.getElementById('source');
             var _driverLocation = document.getElementById('driverLocation');
             var _destination = document.getElementById('destination');
+            var originLoc, endloc;
 
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 50,
                 center: { lat: -25.363, lng: 131.044 },
                 mapTypeId: 'roadmap'
             });
-
             geocoder_drop
             .geocode({location: { lat: LocationsForMap[1][1], lng: LocationsForMap[1][2] }})
             .then((response) => {
@@ -78,6 +81,7 @@
                     infowindowDropOff.setContent(response.results[0].formatted_address);
                     infowindowDropOff.open(map, marker);
                     _destination.innerHTML = response.results[0].formatted_address;
+                    endloc = { lat: LocationsForMap[1][1], lng: LocationsForMap[1][2] };
                 } else {
                     window.alert("No results found");
                 }
@@ -124,6 +128,7 @@
                         },
                     });
                     _source.innerHTML = response.results[0].formatted_address;
+                    originLoc = { lat: LocationsForMap[0][1], lng: LocationsForMap[0][2] }
                 } else {
                     window.alert("No results found");
                 }
@@ -136,6 +141,17 @@
                 bounds.extend(myLatLng);
             }
             map.fitBounds(bounds);
+            directionsRenderer.setMap(map);
+            directionsService
+            .route({
+                origin: { lat: LocationsForMap[0][1], lng: LocationsForMap[0][2] },
+                destination: { lat: LocationsForMap[1][1], lng: LocationsForMap[1][2] },
+                travelMode: google.maps.TravelMode.DRIVING,
+            })
+            .then((response) => {
+                directionsRenderer.setDirections(response);
+            })
+            .catch((e) => window.alert("Directions request failed due to " + status));
         }
 
     </script>
