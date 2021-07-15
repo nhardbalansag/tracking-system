@@ -28,6 +28,7 @@
     <div id="map"></div>
     <div class="my-3">
         <a href="{{ route('home') }}" class="btn btn-primary">Back</a>
+        <button id="directionBtn" type="button" class="btn btn-primary">Directions</button>
     </div>
 </div>
 
@@ -142,10 +143,22 @@
             }
             map.fitBounds(bounds);
             directionsRenderer.setMap(map);
+
+            document.getElementById("directionBtn").addEventListener("click", () => {
+                calculateAndDisplayRoute(
+                    directionsService,
+                    directionsRenderer,
+                    { lat: LocationsForMap[0][1], lng: LocationsForMap[0][2] },
+                    { lat: LocationsForMap[1][1], lng: LocationsForMap[1][2] }
+                    );
+            });
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
             directionsService
             .route({
-                origin: { lat: LocationsForMap[0][1], lng: LocationsForMap[0][2] },
-                destination: { lat: LocationsForMap[1][1], lng: LocationsForMap[1][2] },
+                origin: origin,
+                destination: destination,
                 travelMode: google.maps.TravelMode.DRIVING,
             })
             .then((response) => {
