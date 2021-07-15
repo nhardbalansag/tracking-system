@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\Tracking\DriverController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,10 @@ use App\Http\Controllers\TestController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('test',  [TestController::class, 'test']);
+Route::get('/',  [DriverController::class, 'index']);
+Route::post('track-driver',  [DriverController::class, 'track_driver'])->name('track-driver');
