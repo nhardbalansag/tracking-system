@@ -20,5 +20,5 @@ use App\Http\Controllers\Tracking\DriverController;
 // });
 
 Route::get('test',  [TestController::class, 'test']);
-Route::get('/',  [DriverController::class, 'index']);
+Route::get('/',  [DriverController::class, 'index'])->name('home');
 Route::post('track-driver',  [DriverController::class, 'track_driver'])->name('track-driver');
